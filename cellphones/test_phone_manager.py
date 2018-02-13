@@ -162,8 +162,6 @@ class TestPhoneManager(unittest.TestCase):
         testAssignmentMgr.add_phone(testPhone1)
         testAssignmentMgr.add_employee(testEmp1)
 
-        testAssignmentMgr.assign(1, testEmp1)
-        testAssignmentMgr.un_assign(1)
         self.assertFalse(testAssignmentMgr.phones[0].is_assigned())
 
 
