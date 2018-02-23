@@ -22,15 +22,39 @@ def add_miles(vehicle, new_miles):
     conn.commit()
     conn.close()
 
+def search_vehicle(vehicle):
+    '''search vehicle in the database and return its current mileage. If the vehicle
+    doesn't exist, return None'''
+    conn = sqlite3.connect(db_url)
+    cur = conn.cursor()
+    sql_statement = ('SELECT * FROM MILES WHERE vehicle = ?')
+    search = cur.execute(sql_statement, (vehicle,))
+    if search.rowcount == 0:
+        return
+    else:
+        for r in search:
+            return r[1]
+
+def change_to_uppercase(vehicle):
+    return vehicle.upper()
+
 
 def main():
     while True:
-        vehicle = input('Enter vehicle name or enter to quit')
-        if not vehicle:
-            break
-        miles = float(input('Enter new miles for %s' % vehicle)) ## TODO input validation
-
-        add_miles(vehicle, miles)
+        try:
+            vehicle = input('Enter vehicle name or enter q to quit: ')
+            if vehicle == 'q':
+                print('Thanks.')
+                break
+            miles = int(input('Enter new miles for %s: ' % vehicle)) ## TODO input validation
+            vehicle = change_to_uppercase(vehicle)
+            add_miles(vehicle, miles)
+        except ValueError:
+            print('New miles must be numerical.')
+            miles = int(input('Enter new miles for %s: ' % vehicle))
+        vehicle1 = input('Enter vehicle to search: ')
+        miles = search_vehicle(vehicle1)
+        print(miles)
 
 
 if __name__ == '__main__':
